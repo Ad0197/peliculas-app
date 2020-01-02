@@ -13,7 +13,7 @@ class PeliculaProvider{
       'api_key' : _apiKey,
       'language': _language,
     });
-    return _extraerPeliculas(url);
+    return await _extraerPeliculas(url);
   }
 
   Future<List<Pelicula>> getPopular() async{
@@ -21,7 +21,7 @@ class PeliculaProvider{
       'api_key' : _apiKey,
       'language': _language,
     });
-    return _extraerPeliculas(url);
+    return await _extraerPeliculas(url);
   }
 
   Future<List<Pelicula>> _extraerPeliculas(Uri url) async{
