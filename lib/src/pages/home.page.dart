@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:peliculas_app/src/models/peliculas.model.dart';
 import 'package:peliculas_app/src/providers/peliculas.provider.dart';
 
 import '../components/card.swiper.components.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key key}) : super(key: key);
   static String pageName = '/';
+  final peliculasProvider = PeliculaProvider();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,8 +15,11 @@ class HomePage extends StatelessWidget {
         title: Text('Peliculas en cines'),
         backgroundColor: Colors.indigoAccent,
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: (){},),
-          ],
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(15.0),
@@ -27,9 +32,21 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _swiperTarjetas() {
-    final peliculasProvider = PeliculaProvider();
-    peliculasProvider.getEnCines();
-    return CardSwiper(peliculas: [1,2,3,4,5],);
-  }
+  Widget _swiperTarjetas() => FutureBuilder(
+        future: peliculasProvider.getEnCines(),
+        initialData: Pelicula,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          print(snapshot.data);
+          return (snapshot.hasData)
+              ? CardSwiper(
+                  peliculas: snapshot.data,
+                )
+              : Container(
+                height: 400.0,
+                child: Center(
+                  child: CircularProgressIndicator()
+                  )
+                );
+        },
+      );
 }
