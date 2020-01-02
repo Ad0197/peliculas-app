@@ -13,9 +13,7 @@ class PeliculaProvider{
       'api_key' : _apiKey,
       'language': _language,
     });
-
-    final resp = await http.get(url);
-    return _extraerPeliculas(resp);
+    return _extraerPeliculas(url);
   }
 
   Future<List<Pelicula>> getPopular() async{
@@ -23,12 +21,11 @@ class PeliculaProvider{
       'api_key' : _apiKey,
       'language': _language,
     });
-
-    final resp = await http.get(url);
-    return _extraerPeliculas(resp);
+    return _extraerPeliculas(url);
   }
 
-  List<Pelicula> _extraerPeliculas(http.Response resp){
+  Future<List<Pelicula>> _extraerPeliculas(Uri url) async{
+    final resp = await http.get(url);
     final decodeData = json.decode(resp.body);
     final peliculas = Peliculas.fromJsonList(decodeData['results']);
     return peliculas.items;
