@@ -26,6 +26,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             _swiperTarjetas(),
+            _footer(),
           ],
         ),
       ),
@@ -34,19 +35,21 @@ class HomePage extends StatelessWidget {
 
   Widget _swiperTarjetas() => FutureBuilder(
         future: peliculasProvider.getEnCines(),
-        initialData: Pelicula,
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          print(snapshot.data);
+        builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
           return (snapshot.hasData)
               ? CardSwiper(
                   peliculas: snapshot.data,
                 )
               : Container(
-                height: 400.0,
-                child: Center(
+                  height: 400.0,
+                  child: Center(
                   child: CircularProgressIndicator()
                   )
                 );
         },
       );
+
+  Widget _footer() => Container(
+    width:
+  );
 }
