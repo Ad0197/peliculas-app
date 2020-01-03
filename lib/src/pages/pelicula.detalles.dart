@@ -34,6 +34,7 @@ Widget _crearAppBar(Pelicula pelicula) {
           fit: BoxFit.cover,
           image: NetworkImage(pelicula.getBackgroundImgUrl()),
           placeholder: AssetImage('assets/img/loading.gif'),
+          fadeInDuration: Duration(microseconds: 150),
         ),
     ),
   );
