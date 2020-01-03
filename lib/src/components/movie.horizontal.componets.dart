@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:peliculas_app/src/models/peliculas.model.dart';
+import 'package:peliculas_app/src/pages/pelicula.detalles.dart';
 import '../utils/medias.querys.util.dart';
 
 class MovieHorizontal extends StatelessWidget {
@@ -29,35 +30,42 @@ class MovieHorizontal extends StatelessWidget {
         controller: _pageController,
         pageSnapping: false,
         itemCount: peliculas.length,
-        itemBuilder: (context, index) => _tarjeta(peliculas[index], context),
+        itemBuilder: (context, index) => _tarjeta(peliculas[index], context)
+        ,
       ),
     );
   }
 
-  Widget _tarjeta(Pelicula pelicula, BuildContext context) =>  Container(
-            margin: EdgeInsets.only(right: 15.0),
-            child: Column(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20.0),
-                  child: FadeInImage(
-                    image: NetworkImage(pelicula.getPosterImgUrl()),
-                    placeholder: AssetImage('assets/img/no-image.jpg'),
-                    fit: BoxFit.cover,
-                    height: height * 0.17,
+  Widget _tarjeta(Pelicula pelicula, BuildContext context) 
+  =>  GestureDetector(
+      onTap: (){
+        Navigator.of(context).pushNamed(PeliculaDetalle.pageName, arguments: pelicula);
+      },
+      child: Container(
+              margin: EdgeInsets.only(right: 15.0),
+              child: Column(
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: FadeInImage(
+                      image: NetworkImage(pelicula.getPosterImgUrl()),
+                      placeholder: AssetImage('assets/img/no-image.jpg'),
+                      fit: BoxFit.cover,
+                      height: height * 0.17,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: 5.0,
-                ),
-                Text(
-                  pelicula.title,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.caption,
-                )
-              ],
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Text(
+                    pelicula.title,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.caption,
+                  )
+                ],
+              ),
             ),
-          );
+  );
 
   // List<Widget> _tarjetas(BuildContext context) => peliculas
   //     .map((pelicula) => Container(
