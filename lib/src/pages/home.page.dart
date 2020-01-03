@@ -69,7 +69,7 @@ class HomePage extends StatelessWidget {
             return (snapshot.hasData)
             ? MovieHorizontal(peliculas: snapshot.data,)
             : Container(
-                  height: 400.0,
+                  height: 100.0,
                   child: Center(
                   child: CircularProgressIndicator()
                   )

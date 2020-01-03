@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 
 import 'package:peliculas_app/src/models/peliculas.model.dart';
