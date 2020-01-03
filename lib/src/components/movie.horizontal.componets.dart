@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 
 import 'package:peliculas_app/src/models/peliculas.model.dart';
@@ -24,16 +25,16 @@ class MovieHorizontal extends StatelessWidget {
     });
     return Container(
       height: height * 0.2,
-      child: PageView(
+      child: PageView.builder(
         controller: _pageController,
         pageSnapping: false,
-        children: _tarjetas(context),
+        itemCount: peliculas.length,
+        itemBuilder: (context, index) => _tarjeta(peliculas[index], context),
       ),
     );
   }
 
-  List<Widget> _tarjetas(BuildContext context) => peliculas
-      .map((pelicula) => Container(
+  Widget _tarjeta(Pelicula pelicula, BuildContext context) =>  Container(
             margin: EdgeInsets.only(right: 15.0),
             child: Column(
               children: <Widget>[
@@ -56,6 +57,32 @@ class MovieHorizontal extends StatelessWidget {
                 )
               ],
             ),
-          ))
-      .toList();
+          );
+
+  // List<Widget> _tarjetas(BuildContext context) => peliculas
+  //     .map((pelicula) => Container(
+  //           margin: EdgeInsets.only(right: 15.0),
+  //           child: Column(
+  //             children: <Widget>[
+  //               ClipRRect(
+  //                 borderRadius: BorderRadius.circular(20.0),
+  //                 child: FadeInImage(
+  //                   image: NetworkImage(pelicula.getPosterImgUrl()),
+  //                   placeholder: AssetImage('assets/img/no-image.jpg'),
+  //                   fit: BoxFit.cover,
+  //                   height: height * 0.17,
+  //                 ),
+  //               ),
+  //               SizedBox(
+  //                 height: 5.0,
+  //               ),
+  //               Text(
+  //                 pelicula.title,
+  //                 overflow: TextOverflow.ellipsis,
+  //                 style: Theme.of(context).textTheme.caption,
+  //               )
+  //             ],
+  //           ),
+  //         ))
+  //     .toList();
 }
