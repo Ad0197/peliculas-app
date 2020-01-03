@@ -1,10 +1,9 @@
-
-
 import 'package:flutter/material.dart';
-// import 'package:peliculas_app/src/models/peliculas.model.dart';
-import 'package:peliculas_app/src/providers/peliculas.provider.dart';
 
+import 'package:peliculas_app/src/components/movie.horizontal.componets.dart';
+import 'package:peliculas_app/src/utils/medias.querys.util.dart';
 import '../components/card.swiper.components.dart';
+import 'package:peliculas_app/src/providers/peliculas.provider.dart';
 
 class HomePage extends StatelessWidget {
   static String pageName = '/';
@@ -12,6 +11,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     // Estas lineas definen el tamaño de la pantalla
+    MediaQueryUtils.WIDTH = MediaQuery.of(context).size.width;
+    MediaQueryUtils.HEIGHT = MediaQuery.of(context).size.height;
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Peliculas en cines'),
@@ -55,14 +58,16 @@ class HomePage extends StatelessWidget {
   Widget _footer(BuildContext context) => Container(
     width: double.infinity,
     child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children:<Widget>[
-        Text("Populares", style: Theme.of(context).textTheme.subhead,),
+        Container(padding: EdgeInsets.only(left: 20.0),child: Text("Populares", style: Theme.of(context).textTheme.subhead,)),
+        SizedBox(height: 5.0,),
         FutureBuilder(
           future: peliculasProvider.getPopular(),
           builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
             print(snapshot.data);
             return (snapshot.hasData)
-            ? Text("Hola")
+            ? MovieHorizontal(peliculas: snapshot.data,)
             : Container(
                   height: 400.0,
                   child: Center(
