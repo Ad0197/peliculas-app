@@ -11,10 +11,11 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     // Estas lineas definen el tamaño de la pantalla
-    MediaQueryUtils.WIDTH = MediaQuery.of(context).size.width;
-    MediaQueryUtils.HEIGHT = MediaQuery.of(context).size.height;
-    
+    peliculasProvider.getPopular();
+    // Estas lineas definen el tamaño de la pantalla
+    MediaQueryUtils.width = MediaQuery.of(context).size.width;
+    MediaQueryUtils.heigh = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Peliculas en cines'),
@@ -48,35 +49,53 @@ class HomePage extends StatelessWidget {
                 )
               : Container(
                   height: 400.0,
-                  child: Center(
-                  child: CircularProgressIndicator()
-                  )
-                );
+                  child: Center(child: CircularProgressIndicator()));
         },
       );
 
   Widget _footer(BuildContext context) => Container(
-    width: double.infinity,
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children:<Widget>[
-        Container(padding: EdgeInsets.only(left: 20.0),child: Text("Populares", style: Theme.of(context).textTheme.subhead,)),
-        SizedBox(height: 5.0,),
-        FutureBuilder(
-          future: peliculasProvider.getPopular(),
-          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-            print(snapshot.data);
-            return (snapshot.hasData)
-            ? MovieHorizontal(peliculas: snapshot.data,)
-            : Container(
-                  height: 100.0,
-                  child: Center(
-                  child: CircularProgressIndicator()
-                  )
-                );
-          },
-        ),
-      ],
-    ),
-  );
+      width: double.infinity,
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                padding: EdgeInsets.only(left: 20.0),
+                child: Text(
+                  "Populares",
+                  style: Theme.of(context).textTheme.subhead,
+                )),
+            SizedBox(
+              height: 5.0,
+            ),
+            StreamBuilder(
+              stream: peliculasProvider.populareStream,
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                return (snapshot.hasData)
+                    ? MovieHorizontal(
+                        peliculas: snapshot.data,
+                        siguientePagina: peliculasProvider.getPopular,
+                      )
+                    : Container(
+                        height: 100.0,
+                        child: Center(child: CircularProgressIndicator()));
+              },
+            ),
+          ]));
+  // FutureBuilder(
+  //   future: peliculasProvider.getPopular(),
+  //   builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+  //     print(snapshot.data);
+  //     return (snapshot.hasData)
+  //     ? MovieHorizontal(peliculas: snapshot.data,)
+  //     : Container(
+  //           height: 100.0,
+  //           child: Center(
+  //           child: CircularProgressIndicator()
+  //           )
+  //         );
+  //   },
+  //     ),
+  //   ],
+  // ),
+  // );
 }
